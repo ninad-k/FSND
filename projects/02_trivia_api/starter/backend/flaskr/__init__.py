@@ -119,7 +119,8 @@ def create_app(test_config=None):
     @app.route('/questions', methods=['POST'])
     def post_question():
         '''
-        Handles POST requests for creating new questions and searching questions.
+        Handles POST requests for creating new questions
+         and searching questions.
         '''
         # load the request body
         body = request.get_json()
@@ -154,14 +155,15 @@ def create_app(test_config=None):
             new_category = body.get('category')
 
             # ensure all fields have data
-            if ((new_question is None) or (new_answer is None)
-                    or (new_difficulty is None) or (new_category is None)):
+            if ((new_question is None) or (new_answer is None) or
+                    (new_difficulty is None) or (new_category is None)):
                 abort(422)
 
             try:
                 # create and insert new question
                 question = Question(question=new_question, answer=new_answer,
-                                    difficulty=new_difficulty, category=new_category)
+                                    difficulty=new_difficulty,
+                                    category=new_category)
                 question.insert()
 
                 # get all questions and paginate
@@ -195,7 +197,7 @@ def create_app(test_config=None):
             abort(400)
 
         # get the matching questions
-        selection = Question.query.filter_by(category=category.id).all()
+        selection = Question.query.filter_by(category=str(category.id)).all()
 
         # paginate the selection
         paginated = paginate_questions(request, selection)

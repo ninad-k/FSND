@@ -15,12 +15,14 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        self.database_path = "postgres://udacity:udacity@localhost:5432/{}".format(self.database_name)
+        self.database_path = "postgres://udacity:udacity@localhost:5432/{}" \
+            .format(self.database_name)
         setup_db(self.app, self.database_path)
 
         # sample question for use in tests
         self.new_question = {
-            'question': 'Which four states make up the 4 Corners region of the US?',
+            'question': 'Which four states make up the '
+                        '4 Corners region of the US?',
             'answer': 'Colorado, New Mexico, Arizona, Utah',
             'difficulty': 3,
             'category': 1
@@ -73,15 +75,17 @@ class TriviaTestCase(unittest.TestCase):
         """Tests question deletion success"""
 
         # create a new question to be deleted
-        question = Question(question=self.new_question['question'], answer=self.new_question['answer'],
-                            category=self.new_question['category'], difficulty=self.new_question['difficulty'])
+        question = Question(question=self.new_question['question'],
+                            answer=self.new_question['answer'],
+                            category=self.new_question['category'],
+                            difficulty=self.new_question['difficulty'])
         question.insert()
 
         # get the id of the new question
         q_id = question.id
 
         # get number of questions before delete
-        questions_before = Question. query.all()
+        questions_before = Question.query.all()
 
         # delete the question and store response
         response = self.client().delete('/questions/{}'.format(q_id))
@@ -191,8 +195,10 @@ class TriviaTestCase(unittest.TestCase):
         category.insert()
 
         # create a new question to be deleted
-        question = Question(question=self.new_question['question'], answer=self.new_question['answer'],
-                            category=category.id, difficulty=self.new_question['difficulty'])
+        question = Question(question=self.new_question['question'],
+                            answer=self.new_question['answer'],
+                            category=category.id,
+                            difficulty=self.new_question['difficulty'])
         question.insert()
 
         get_request_object = '/categories/{}/questions'.format(category.id)
@@ -232,7 +238,8 @@ class TriviaTestCase(unittest.TestCase):
         # send post request with category and previous questions
         response = self.client().post('/quizzes',
                                       json={'previous_questions': [1, 2],
-                                            'quiz_category': {'type': '3', 'id': '1'}})
+                                            'quiz_category':
+                                                {'type': '3', 'id': '1'}})
 
         # load response data
         data = json.loads(response.data)

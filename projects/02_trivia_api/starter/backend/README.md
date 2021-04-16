@@ -65,28 +65,201 @@ One note before you delve into your tasks: for each endpoint you are expected to
 7. Create a POST endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question. 
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
-
 REVIEW_COMMENT
 ```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
+This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code.
 
 Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
 
-GET '/categories'
+- ### GET /categories
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+- Returns: all categories
+- Response Arguments:
+    - dictionary of all `categories` 
 
+- sample: `curl http://127.0.0.1:5000/categories` or 
+` curl http://127.0.0.1:5000/category`
+
+```
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports",
+    "7": "test"
+  },
+  "success": true
+}
+```
+
+- ### GET /questions
+- Fetches a dictionary of questions 
+- Fetches a dictionary of categories 
+- Request Arguments: None
+- Returns: 10 questions in each page
+- Response Arguments:
+    - dictionary `categories` 
+    - dictionary `questions`
+
+sample: `curl http://127.0.0.1:5000/questions` or 
+` curl http://127.0.0.1:5000/question`
+
+```
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports",
+    "7": "test"
+  },
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "totalQuestions": 20
+}
+```
+- ### DELETE '/question/` <int:question_id> `'
+- delete question by id 
+- Request Arguments: None
+- Response Arguments: 
+    - `delete_id` 
+    - `message` 
+- Sample: 
+`curl http://127.0.0.1:5000/questions/27 -X DELETE`
+```
+{
+  "delete_id": 27,
+  "message": "Question successfully deleted",
+  "success": true
+}
+```
+- ### POST /questions
+- Create new question and add in database
+- Request Arguments:
+    - `question`
+    - `answer`
+    - `difficulty` 
+    - `category`
+- Response Arguments:
+     - `question`
+    - `answer`
+    - `difficulty` 
+    - `category
+- Sample:
+`curl -L -X POST 'http://127.0.0.1:5000/questions' -H 'Content-Type: application/json' --data-raw '{
+    "question": "What is the #1 search engine used today?",
+    "answer": "Google",
+    "difficulty": 1,
+    "category": 5
+}'`
+```
+{
+  "answer": "Google",
+  "category": 5,
+  "difficulty": 1,
+  "question": "What is the #1 search engine used today?",
+  "success": true
+}
+```
+- ### POST /questions/search
+- Returns search result for questions
+- Request Arguments: `searchTerm` search term
+- Response Arguments: `current_category` and `totalQuestions
+- Sample: `curl -L -X POST 'http://127.0.0.1:5000/questions/search' -H 'Content-Type: application/json' --data-raw '{
+	"searchTerm": "search engine"}
+' `
+```
+{
+  "current_category": 5,
+  "questions": [
+    {
+      "answer": "Google",
+      "category": 5,
+      "difficulty": 1,
+      "id": 28,
+      "question": "What is the #1 search engine used today?"
+    }
+  ],
+  "success": true,
+  "totalQuestions": 1
+}
 ```
 
 

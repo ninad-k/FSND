@@ -45,7 +45,8 @@ def get_token_auth_header():
     # attempt to split bearer and the token
     parts = auth.split()
 
-    # raise an AuthError if the header is malformed return the token part of the header
+    # raise an AuthError if the header is malformed return the token
+    # part of the header
     if parts[0].lower() != 'bearer':
         raise AuthError({
             'code': 'invalid_header',
@@ -80,7 +81,8 @@ def check_permissions(permission, payload):
             'description': 'Permissions not included in JWT'
         }, 400)
 
-    # raise an AuthError if the requested permission string is not in the payload permissions array return true otherwise
+    # raise an AuthError if the requested permission string is not in the
+    # payload permissions array return true otherwise
     if permission not in payload['permissions']:
         raise AuthError({
             'code': 'forbidden',

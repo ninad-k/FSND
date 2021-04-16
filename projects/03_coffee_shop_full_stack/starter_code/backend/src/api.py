@@ -20,7 +20,7 @@ CORS(app)
 
 # db_drop_and_create_all()
 
-## ROUTES
+# ROUTES
 
 
 @app.route('/drinks')
@@ -29,7 +29,8 @@ def get_drinks():
     GET /drinks
         it retrievves the list of drink and their shortened attributes
         it contains only the drink.short() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
+    returns status code 200 and json {"success": True, "drinks": drinks}
+    where drinks is the list of drinks
         or appropriate status code indicating reason for failure
     '''
     try:
@@ -53,7 +54,8 @@ def get_drinks_details():
     GET /drinks-detail
         it retrieve list of drink and their detailed attributes
         it requires the 'get:drinks-detail' permission
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
+    returns status code 200 and json {"success": True, "drinks": drinks}
+    where drinks is the list of drinks
         or appropriate status code indicating reason for failure
     '''
     try:
@@ -77,7 +79,8 @@ def create_drinks():
     POST /drinks
         it creates a new row in the drinks table
         it requires the 'post:drinks' permission
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
+    returns status code 200 and json {"success": True, "drinks": drink}
+    where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
     '''
     new_drink_info = json.loads(request.data)
@@ -109,7 +112,8 @@ def update_drink(id):
         it updates the corresponding row for drink's <id>
         it responds with a 404 error if <id> is
         it requires the 'patch:drinks' permission
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
+    returns status code 200 and json {"success": True, "drinks": drink}
+    where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
     '''
     update = request.get_json()
@@ -155,7 +159,9 @@ def delete_drinks(id):
         else:
             drink.delete()
 
-        # returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record or appropriate status code indicating reason for failure
+        # returns status code 200 and json {"success": True, "delete": id}
+        # where id is the id of the deleted record or appropriate status code
+        # indicating reason for failure
         return jsonify({
             "success": True,
             "delete": id
